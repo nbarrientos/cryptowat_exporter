@@ -12,7 +12,7 @@ Building yourself is rather easy, just install `golang` and `make` and run:
 make
 ```
 
-To build a docker image, adjust the Docker architectures in the `Makefile` and run:
+To build a Docker image, adjust the Docker architectures in the `Makefile` and run:
 
 ```
 make docker
