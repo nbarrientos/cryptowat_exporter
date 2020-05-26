@@ -124,7 +124,7 @@ var (
 
 func main() {
 	var (
-		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9150").String()
+		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9745").String()
 		exchanges     = kingpin.Flag("cryptowat.exchanges", "Comma separated list of exchanges.").Default("kraken,bitstamp").String()
 		pairs         = kingpin.Flag("cryptowat.pairs", "Comma separated list of pairs.").Default("btcusd,ltcusd").String()
 		cacheSeconds  = kingpin.Flag("cryptowat.cacheseconds", "Number of seconds to cache values for.").Default("60").String()

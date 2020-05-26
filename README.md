@@ -21,7 +21,7 @@ The exporter takes some command line parameters that allow configuring a few thi
 * `--cryptowat.exchanges`: Comma separated list of exchanges to scrap (default: `bitstamp,kraken,coinbase-pro`)
 * `--cryptowat.pairs`: Comma separated list of pairs to scrap (default: `btcusd,ltcusd`) 
 * `--cryptowat.cachesecs`: Number of seconds to cache values for (default: 60) 
-* `--web.listen-address`: Address and port to listen on (default: `:9150`) 
+* `--web.listen-address`: Address and port to listen on (default: `:9745`)
 
 ## Generated metrics
 
