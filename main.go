@@ -135,5 +135,7 @@ func main() {
 	recordMetrics()
 	log.Printf("Listening on address %s", listenAddress)
 	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(listenAddress, nil)
+	if err := http.ListenAndServe(listenAddress, nil); err != nil {
+		log.Fatalf("Error starting HTTP server (%s)", err)
+	}
 }
