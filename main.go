@@ -23,7 +23,7 @@ func recordMetrics() {
 			marketSummaries, err := restclient.GetMarketSummaries()
 
 			if err != nil {
-				log.Fatal("Unable to fetch summaries")
+				log.Println("Unable to fetch summaries")
 			}
 
 			exchangesSlice := strings.Split(exchanges, ",")
