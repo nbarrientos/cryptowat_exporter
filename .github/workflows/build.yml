@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v1
       
     - name: Build
-      run: go build -o prometheus-cryptowat-exporter -v .
+      run: make
       
     - name: Save artifacts
       uses: actions/upload-artifact@v1
