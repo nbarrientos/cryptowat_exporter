@@ -18,7 +18,7 @@ jobs:
     - name: Build
       env:
         GOOS: linux
-        CGO_ENABLED: 0
+        CGO_ENABLED: 1
       run: make
     - name: Upload Release Asset
       id: upload-release-asset 
