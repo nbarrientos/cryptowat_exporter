@@ -32,9 +32,18 @@ func recordMetrics() {
 
 			for _, exchange := range exchangesSlice {
 				for _, pair := range pairsSlice {
+					log.Printf("Looking for market %s:%s", exchange, pair)
 					if summary, present := marketSummaries[fmt.Sprintf("%s:%s", exchange, pair)]; present {
 						last, _ := strconv.ParseFloat(summary.Last, 64)
 						lastValue.WithLabelValues(exchange, pair).Set(last)
+						high, _ := strconv.ParseFloat(summary.High, 64)
+						highValue.WithLabelValues(exchange, pair).Set(high)
+						low, _ := strconv.ParseFloat(summary.Low, 64)
+						lowValue.WithLabelValues(exchange, pair).Set(low)
+						changeAbsolute, _ := strconv.ParseFloat(summary.ChangeAbsolute, 64)
+						changeAbsoluteValue.WithLabelValues(exchange, pair).Set(changeAbsolute)
+						changePercent, _ := strconv.ParseFloat(summary.ChangePercent, 64)
+						changePercentValue.WithLabelValues(exchange, pair).Set(changePercent)
 					}
 				}
 
@@ -46,14 +55,56 @@ func recordMetrics() {
 }
 
 var (
-	lastValue = promauto.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "crypto_last_value",
-		Help: "The last known value in a given market (exchange/pair)",
-	},
+	lastValue = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_last_value",
+			Help: "The last known value in a given market (exchange/pair)",
+		},
 		[]string{
 			"exchange",
 			"pair",
-		})
+		},
+	)
+	highValue = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_high_24h_value",
+			Help: "The 24h highest value in a given market (exchange/pair)",
+		},
+		[]string{
+			"exchange",
+			"pair",
+		},
+	)
+	lowValue = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_low_24h_value",
+			Help: "The 24h lowest value in a given market (exchange/pair)",
+		},
+		[]string{
+			"exchange",
+			"pair",
+		},
+	)
+	changePercentValue = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_change_percent_value",
+			Help: "The 24h percentage change in a given market (exchange/pair)",
+		},
+		[]string{
+			"exchange",
+			"pair",
+		},
+	)
+	changeAbsoluteValue = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_change_absolute_value",
+			Help: "The 24h absolute change in a given market (exchange/pair)",
+		},
+		[]string{
+			"exchange",
+			"pair",
+		},
+	)
 	exchanges     string
 	pairs         string
 	listenAddress string
