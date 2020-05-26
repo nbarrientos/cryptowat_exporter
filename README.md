@@ -6,6 +6,18 @@ A [Prometheus](https://prometheus.io/) exporter to fetch values from [cryptowat.
 
 Binaries can be downloaded from the Github releases page. A Docker image will be released soon.
 
+Building yourself is rather easy, just install `golang` and `make` and run:
+
+```
+make
+```
+
+To build a docker image, adjust the Docker architectures in the `Makefile` and run:
+
+```
+make docker
+```
+
 ## Usage
 
 ```
