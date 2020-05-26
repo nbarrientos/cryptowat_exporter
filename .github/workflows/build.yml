@@ -18,10 +18,10 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
-      
+
     - name: Build
       run: make
-      
+
     - name: Save artifacts
       uses: actions/upload-artifact@v1
       with:
