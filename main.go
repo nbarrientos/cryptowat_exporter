@@ -72,8 +72,8 @@ func recordMetrics(exchanges string, pairs string, cacheSeconds string) {
 var (
 	lastValue = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_last_value",
-			Help: "The last known value in a given market (exchange/pair)",
+			Name: "crypto_currency",
+			Help: "The last known trading value in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
@@ -82,8 +82,8 @@ var (
 	)
 	highValue = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_high_24h_value",
-			Help: "The 24h highest value in a given market (exchange/pair)",
+			Name: "crypto_high_24h_currency",
+			Help: "The 24h highest value in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
@@ -92,8 +92,8 @@ var (
 	)
 	lowValue = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_low_24h_value",
-			Help: "The 24h lowest value in a given market (exchange/pair)",
+			Name: "crypto_low_24h_currency",
+			Help: "The 24h lowest value in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
@@ -102,7 +102,7 @@ var (
 	)
 	changePercentValue = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_change_24h_percent_value",
+			Name: "crypto_change_24h_percent",
 			Help: "The 24h percentage change in a given market (exchange/pair)",
 		},
 		[]string{
@@ -112,8 +112,8 @@ var (
 	)
 	changeAbsoluteValue = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_change_24h_absolute_value",
-			Help: "The 24h absolute change in a given market (exchange/pair)",
+			Name: "crypto_change_24h_currency",
+			Help: "The 24h absolute change in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
