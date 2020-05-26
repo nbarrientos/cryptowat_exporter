@@ -49,7 +49,7 @@ func recordMetrics() {
 
 			}
 
-			time.Sleep(60 * time.Second)
+			time.Sleep(time.Duration(cacheSeconds) * time.Second)
 		}
 	}()
 }
@@ -108,11 +108,13 @@ var (
 	exchanges     string
 	pairs         string
 	listenAddress string
+	cacheSeconds  int
 )
 
 func init() {
 	flag.StringVar(&exchanges, "cryptowat.exchanges", "bitstamp,kraken,coinbase-pro", "Comma separated list of exchanges")
 	flag.StringVar(&pairs, "cryptowat.pairs", "btcusd,ltcusd", "Comma separated list of pairs")
+	flag.IntVar(&cacheSeconds, "cryptowat.cacheseconds", 60, "Number of seconds to cache values for")
 	flag.StringVar(&listenAddress, "web.listen-address", ":9150", "Address to listen on for web interface and telemetry")
 	flag.Parse()
 }
