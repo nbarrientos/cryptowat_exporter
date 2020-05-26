@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -14,24 +16,6 @@ import (
 	"code.cryptowat.ch/cw-sdk-go/client/rest"
 )
 
-func isExchangeConsidered(exchange string) bool {
-	for _, x := range exchanges {
-		if x == exchange {
-			return true
-		}
-	}
-	return false
-}
-
-func isPairConsidered(pair string) bool {
-	for _, x := range pairs {
-		if x == pair {
-			return true
-		}
-	}
-	return false
-}
-
 func recordMetrics() {
 	go func() {
 		for {
@@ -43,13 +27,17 @@ func recordMetrics() {
 				log.Fatal("Unable to fetch summaries")
 			}
 
-			for market, summary := range marketSummaries {
-				r := strings.Split(market, ":")
-				exchange, pair := r[0], r[1]
-				if isExchangeConsidered(exchange) && isPairConsidered(pair) {
-					last, _ := strconv.ParseFloat(summary.Last, 64)
-					lastValue.WithLabelValues(exchange, pair).Set(last)
+			exchangesSlice := strings.Split(exchanges, ",")
+			pairsSlice := strings.Split(pairs, ",")
+
+			for _, exchange := range exchangesSlice {
+				for _, pair := range pairsSlice {
+					if summary, present := marketSummaries[fmt.Sprintf("%s:%s", exchange, pair)]; present {
+						last, _ := strconv.ParseFloat(summary.Last, 64)
+						lastValue.WithLabelValues(exchange, pair).Set(last)
+					}
 				}
+
 			}
 
 			time.Sleep(60 * time.Second)
@@ -66,9 +54,15 @@ var (
 			"exchange",
 			"pair",
 		})
-	exchanges = []string{"bitstamp", "kraken", "coinbase-pro"}
-	pairs     = []string{"btcusd", "ltcusd"}
+	exchanges string
+	pairs     string
 )
+
+func init() {
+	flag.StringVar(&exchanges, "cryptowat.exchanges", "bitstamp,kraken,coinbase-pro", "Comma separated list of exchanges")
+	flag.StringVar(&pairs, "cryptowat.pairs", "btcusd,ltcusd", "Comma separated list of pairs")
+	flag.Parse()
+}
 
 func main() {
 	recordMetrics()
