@@ -18,10 +18,10 @@ Then visit `http://localhost:9150/metrics`
 
 The exporter takes some command line parameters that allow configuring a few things:
 
-* `--cryptowat.exchanges`: Comma separated list of exchanges to scrap (default: `bitstamp,kraken,coinbase-pro`)
-* `--cryptowat.pairs`: Comma separated list of pairs to scrap (default: `btcusd,ltcusd`) 
-* `--cryptowat.cachesecs`: Number of seconds to cache values for (default: 60) 
-* `--web.listen-address`: Address and port to listen on (default: `:9150`) 
+* `-cryptowat.exchanges`: Comma separated list of exchanges to scrap (default: `bitstamp,kraken,coinbase-pro`)
+* `-cryptowat.pairs`: Comma separated list of pairs to scrap (default: `btcusd,ltcusd`) 
+* `-cryptowat.cachesecs`: Number of seconds to cache values for (default: 60) 
+* `-web.listen-address`: Address and port to listen on (default: `:9150`) 
 
 ## Generated metrics
 
@@ -59,4 +59,4 @@ scrape_configs:
       - targets: ['localhost:9150']
 ```
 
-You can poll as often as you want but, by default, the exporter only refreshes the cached values every minute. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
+You can poll as often as you want but, by default, the exporter only refreshes the cached values every minute. This can be changed using `-cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
