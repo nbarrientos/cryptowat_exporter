@@ -60,3 +60,7 @@ scrape_configs:
 ```
 
 You can poll as often as you want but, by default, the exporter only refreshes the cached values every minute. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
+
+## Example Grafana visualisations
+
+![One](grafana1.png)
