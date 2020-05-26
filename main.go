@@ -18,9 +18,8 @@ import (
 
 func recordMetrics() {
 	go func() {
+		restclient := rest.NewCWRESTClient(nil)
 		for {
-			restclient := rest.NewCWRESTClient(nil)
-
 			marketSummaries, err := restclient.GetMarketSummaries()
 
 			if err != nil {
