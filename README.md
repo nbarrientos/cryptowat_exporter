@@ -1,4 +1,4 @@
-# prometheus-cryptowat-exporter
+# cryptowat_exporter
 
 A [Prometheus](https://prometheus.io/) exporter to fetch values from [cryptowat.ch](https://cryptowat.ch) written in Go.
 
@@ -9,7 +9,7 @@ Binaries can be downloaded from the Github releases page. A Docker image will be
 ## Usage
 
 ```
-./prometheus-cryptowat-exporter
+./cryptowat_exporter
 ```
 
 Then visit `http://localhost:9150/metrics`

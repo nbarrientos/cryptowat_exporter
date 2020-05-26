@@ -4,7 +4,7 @@ include Makefile.common
 
 STATICCHECK_IGNORE =
 
-DOCKER_IMAGE_NAME ?= prometheus-cryptowat-exporter
+DOCKER_IMAGE_NAME ?= cryptowat_exporter
 
 ifdef DEBUG
 	bindata_flags = -debug

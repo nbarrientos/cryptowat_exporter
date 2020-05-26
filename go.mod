@@ -1,4 +1,4 @@
-module github.com/nbarrientos/prometheus-cryptowat-exporter
+module github.com/nbarrientos/cryptowat_exporter
 
 require (
 	code.cryptowat.ch/cw-sdk-go v1.0.2
