@@ -27,7 +27,7 @@ make docker
 or with Docker:
 
 ```
-sudo docker run -d --name cryptowat_exporter --user yourchoice -p 9745:9745 prom/cryptowat_exporter-linux-amd64:master
+sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 prom/cryptowat_exporter-linux-amd64:master
 ```
 
 Then visit `http://localhost:9745/metrics`
