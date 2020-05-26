@@ -102,8 +102,8 @@ var (
 	)
 	changePercentValue = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_change_24h_percent",
-			Help: "The 24h percentage change in a given market (exchange/pair)",
+			Name: "crypto_change_24h_ratio",
+			Help: "The 24h change ratio in a given market",
 		},
 		[]string{
 			"exchange",
