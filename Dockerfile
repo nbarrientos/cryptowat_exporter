@@ -11,5 +11,5 @@ ENV CRYPTOWAT_EXCHANGES="bitstamp,kraken,coinbase-pro"
 ENV CRYPTOWAT_PAIRS="btcusd,ltcusd"
 ENV WEB_LISTEN_ADDRESS=":9745"
 
-EXPOSE      9150
+EXPOSE      9745
 ENTRYPOINT  ./bin/cryptowat_exporter --web.listen-address $WEB_LISTEN_ADDRESS --cryptowat.exchanges $CRYPTOWAT_EXCHANGES --cryptowat.pairs $CRYPTOWAT_PAIRS

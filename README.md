@@ -12,7 +12,7 @@ Binaries can be downloaded from the Github releases page. A Docker image will be
 ./cryptowat_exporter
 ```
 
-Then visit `http://localhost:9150/metrics`
+Then visit `http://localhost:9745/metrics`
 
 ## Configuration
 
@@ -56,7 +56,7 @@ crypto_last_value{exchange="kraken",pair="ltcusd"} 42.55
 scrape_configs:
   - job_name: cryptowat
     static_configs:
-      - targets: ['localhost:9150']
+      - targets: ['localhost:9745']
 ```
 
 You can poll as often as you want but, by default, the exporter only refreshes the cached values every minute. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
