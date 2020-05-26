@@ -14,7 +14,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -27,9 +26,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"code.cryptowat.ch/cw-sdk-go/client/rest"
+
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
-func recordMetrics() {
+func recordMetrics(exchanges string, pairs string, cacheSeconds string) {
 	go func() {
 		restclient := rest.NewCWRESTClient(nil)
 		for {
@@ -61,7 +62,9 @@ func recordMetrics() {
 
 			}
 
-			time.Sleep(time.Duration(cacheSeconds) * time.Second)
+			sleepSeconds, _ := strconv.ParseInt(cacheSeconds, 10, 32)
+			log.Printf("Sleeping for %d seconds", sleepSeconds)
+			time.Sleep(time.Duration(sleepSeconds) * time.Second)
 		}
 	}()
 }
@@ -117,25 +120,21 @@ var (
 			"pair",
 		},
 	)
-	exchanges     string
-	pairs         string
-	listenAddress string
-	cacheSeconds  int
 )
 
-func init() {
-	flag.StringVar(&exchanges, "cryptowat.exchanges", "bitstamp,kraken,coinbase-pro", "Comma separated list of exchanges")
-	flag.StringVar(&pairs, "cryptowat.pairs", "btcusd,ltcusd", "Comma separated list of pairs")
-	flag.IntVar(&cacheSeconds, "cryptowat.cacheseconds", 60, "Number of seconds to cache values for")
-	flag.StringVar(&listenAddress, "web.listen-address", ":9150", "Address to listen on for web interface and telemetry")
-	flag.Parse()
-}
-
 func main() {
-	recordMetrics()
-	log.Printf("Listening on address %s", listenAddress)
+	var (
+		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9150").String()
+		exchanges     = kingpin.Flag("cryptowat.exchanges", "Comma separated list of exchanges.").Default("kraken,bitstamp").String()
+		pairs         = kingpin.Flag("cryptowat.pairs", "Comma separated list of pairs.").Default("btcusd,ltcusd").String()
+		cacheSeconds  = kingpin.Flag("cryptowat.cacheseconds", "Number of seconds to cache values for.").Default("60").String()
+	)
+	kingpin.Parse()
+
+	recordMetrics(*exchanges, *pairs, *cacheSeconds)
+	log.Printf("Listening on address %s", *listenAddress)
 	http.Handle("/metrics", promhttp.Handler())
-	if err := http.ListenAndServe(listenAddress, nil); err != nil {
+	if err := http.ListenAndServe(*listenAddress, nil); err != nil {
 		log.Fatalf("Error starting HTTP server (%s)", err)
 	}
 }
