@@ -121,7 +121,7 @@ func init() {
 
 func main() {
 	recordMetrics()
-
+	log.Printf("Listening on address %s", listenAddress)
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(listenAddress, nil)
 }
