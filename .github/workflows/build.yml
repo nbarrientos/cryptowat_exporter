@@ -25,5 +25,5 @@ jobs:
     - name: Save artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: prometheus-cryptowat-exporter-${{ matrix.os }}
-        path: prometheus-cryptowat-exporter
+        name: cryptowat_exporter-${{ matrix.os }}
+        path: cryptowat_exporter
