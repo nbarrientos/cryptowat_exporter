@@ -49,22 +49,18 @@ Example:
 
 ```
 ...
-# HELP crypto_high_24h_value The 24h highest value in a given market (exchange/pair)
-# TYPE crypto_high_24h_value gauge
-crypto_high_24h_value{exchange="bitstamp",pair="btcusd"} 8984.16
-crypto_high_24h_value{exchange="bitstamp",pair="ltcusd"} 43.31
-crypto_high_24h_value{exchange="coinbase-pro",pair="btcusd"} 8977
-crypto_high_24h_value{exchange="coinbase-pro",pair="ltcusd"} 43.31
-crypto_high_24h_value{exchange="kraken",pair="btcusd"} 8975
-crypto_high_24h_value{exchange="kraken",pair="ltcusd"} 43.31
-# HELP crypto_last_value The last known value in a given market (exchange/pair)
-# TYPE crypto_last_value gauge
-crypto_last_value{exchange="bitstamp",pair="btcusd"} 8902.94
-crypto_last_value{exchange="bitstamp",pair="ltcusd"} 42.6
-crypto_last_value{exchange="coinbase-pro",pair="btcusd"} 8898.77
-crypto_last_value{exchange="coinbase-pro",pair="ltcusd"} 42.58
-crypto_last_value{exchange="kraken",pair="btcusd"} 8892.1
-crypto_last_value{exchange="kraken",pair="ltcusd"} 42.55
+# HELP crypto_change_24h_ratio The 24h change ratio in a given market
+# TYPE crypto_change_24h_ratio gauge
+crypto_change_24h_ratio{exchange="bitstamp",pair="btcusd"} 0.0009857005287352
+crypto_change_24h_ratio{exchange="bitstamp",pair="ltcusd"} -0.011901983663944
+crypto_change_24h_ratio{exchange="kraken",pair="btcusd"} 0.0007039934596737
+crypto_change_24h_ratio{exchange="kraken",pair="ltcusd"} -0.0123571928188389
+# HELP crypto_currency The last known trading value in a given market in the currency of the RHS of the pair
+# TYPE crypto_currency gauge
+crypto_currency{exchange="bitstamp",pair="btcusd"} 8814.6
+crypto_currency{exchange="bitstamp",pair="ltcusd"} 42.34
+crypto_currency{exchange="kraken",pair="btcusd"} 8813.1
+crypto_currency{exchange="kraken",pair="ltcusd"} 42.36
 ...
 ```
 
