@@ -5,7 +5,7 @@ LABEL maintainer="Nacho Barrientos <nacho@criptonita.com>"
 
 ARG ARCH="amd64"
 ARG OS="linux"
-COPY .build/${OS}-${ARCH}/cryptowat_exporter  /bin/cryptowat_exporter
+COPY cryptowat_exporter  /bin/cryptowat_exporter
 
 ENV CRYPTOWAT_EXCHANGES="bitstamp,kraken,coinbase-pro"
 ENV CRYPTOWAT_PAIRS="btcusd,ltcusd"
