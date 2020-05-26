@@ -59,4 +59,4 @@ scrape_configs:
       - targets: ['localhost:9150']
 ```
 
-You can poll as often as you want but, by default, the exporter only refreshes the cached values every one minute. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
+You can poll as often as you want but, by default, the exporter only refreshes the cached values every minute. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
