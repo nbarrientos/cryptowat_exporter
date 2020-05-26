@@ -42,6 +42,7 @@ func recordMetrics(exchanges string, pairs string, cacheSeconds string) {
 
 			exchangesSlice := strings.Split(exchanges, ",")
 			pairsSlice := strings.Split(pairs, ",")
+			var lastScrapeEpochMillis float64 = float64(time.Now().UnixNano()) / 1000
 
 			for _, exchange := range exchangesSlice {
 				for _, pair := range pairsSlice {
@@ -57,9 +58,11 @@ func recordMetrics(exchanges string, pairs string, cacheSeconds string) {
 						changeAbsoluteValue.WithLabelValues(exchange, pair).Set(changeAbsolute)
 						changePercent, _ := strconv.ParseFloat(summary.ChangePercent, 64)
 						changePercentValue.WithLabelValues(exchange, pair).Set(changePercent)
+						lastUpdate.WithLabelValues(exchange, pair).Set(lastScrapeEpochMillis)
+					} else {
+						log.Printf("Unable to get information for market %s:%s", exchange, pair)
 					}
 				}
-
 			}
 
 			sleepSeconds, _ := strconv.ParseInt(cacheSeconds, 10, 32)
@@ -114,6 +117,16 @@ var (
 		prometheus.GaugeOpts{
 			Name: "crypto_change_24h_currency",
 			Help: "The 24h absolute change in a given market in the currency of the RHS of the pair",
+		},
+		[]string{
+			"exchange",
+			"pair",
+		},
+	)
+	lastUpdate = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_last_update_seconds",
+			Help: "Seconds since epoch of last update",
 		},
 		[]string{
 			"exchange",
