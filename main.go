@@ -54,13 +54,15 @@ var (
 			"exchange",
 			"pair",
 		})
-	exchanges string
-	pairs     string
+	exchanges     string
+	pairs         string
+	listenAddress string
 )
 
 func init() {
 	flag.StringVar(&exchanges, "cryptowat.exchanges", "bitstamp,kraken,coinbase-pro", "Comma separated list of exchanges")
 	flag.StringVar(&pairs, "cryptowat.pairs", "btcusd,ltcusd", "Comma separated list of pairs")
+	flag.StringVar(&listenAddress, "web.listen-address", ":9150", "Address to listen on for web interface and telemetry")
 	flag.Parse()
 }
 
@@ -68,5 +70,5 @@ func main() {
 	recordMetrics()
 
 	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":8899", nil)
+	http.ListenAndServe(listenAddress, nil)
 }
