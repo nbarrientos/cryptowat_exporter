@@ -1,7 +1,19 @@
+// Copyright 2020 Nacho Barrientos
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -14,9 +26,11 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"code.cryptowat.ch/cw-sdk-go/client/rest"
+
+	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
-func recordMetrics() {
+func recordMetrics(exchanges string, pairs string, cacheSeconds string) {
 	go func() {
 		restclient := rest.NewCWRESTClient(nil)
 		for {
@@ -28,99 +42,112 @@ func recordMetrics() {
 
 			exchangesSlice := strings.Split(exchanges, ",")
 			pairsSlice := strings.Split(pairs, ",")
+			var lastScrapeEpochMillis float64 = float64(time.Now().UnixNano()) / 1000
 
 			for _, exchange := range exchangesSlice {
 				for _, pair := range pairsSlice {
 					log.Printf("Looking for market %s:%s", exchange, pair)
 					if summary, present := marketSummaries[fmt.Sprintf("%s:%s", exchange, pair)]; present {
-						last, _ := strconv.ParseFloat(summary.Last, 64)
-						lastValue.WithLabelValues(exchange, pair).Set(last)
-						high, _ := strconv.ParseFloat(summary.High, 64)
-						highValue.WithLabelValues(exchange, pair).Set(high)
-						low, _ := strconv.ParseFloat(summary.Low, 64)
-						lowValue.WithLabelValues(exchange, pair).Set(low)
-						changeAbsolute, _ := strconv.ParseFloat(summary.ChangeAbsolute, 64)
-						changeAbsoluteValue.WithLabelValues(exchange, pair).Set(changeAbsolute)
-						changePercent, _ := strconv.ParseFloat(summary.ChangePercent, 64)
-						changePercentValue.WithLabelValues(exchange, pair).Set(changePercent)
+						cwLast, _ := strconv.ParseFloat(summary.Last, 64)
+						last.WithLabelValues(exchange, pair).Set(cwLast)
+						cwHigh24, _ := strconv.ParseFloat(summary.High, 64)
+						high24.WithLabelValues(exchange, pair).Set(cwHigh24)
+						cwLow24, _ := strconv.ParseFloat(summary.Low, 64)
+						low24.WithLabelValues(exchange, pair).Set(cwLow24)
+						cwChangeAbsolute, _ := strconv.ParseFloat(summary.ChangeAbsolute, 64)
+						changeAbsolute.WithLabelValues(exchange, pair).Set(cwChangeAbsolute)
+						cwChangePercent, _ := strconv.ParseFloat(summary.ChangePercent, 64)
+						changePercent.WithLabelValues(exchange, pair).Set(cwChangePercent)
+						lastUpdate.WithLabelValues(exchange, pair).Set(lastScrapeEpochMillis)
+					} else {
+						log.Printf("Unable to get information for market %s:%s", exchange, pair)
 					}
 				}
-
 			}
 
-			time.Sleep(time.Duration(cacheSeconds) * time.Second)
+			sleepSeconds, _ := strconv.ParseInt(cacheSeconds, 10, 32)
+			log.Printf("Sleeping for %d seconds", sleepSeconds)
+			time.Sleep(time.Duration(sleepSeconds) * time.Second)
 		}
 	}()
 }
 
 var (
-	lastValue = promauto.NewGaugeVec(
+	last = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_last_value",
-			Help: "The last known value in a given market (exchange/pair)",
+			Name: "crypto_currency",
+			Help: "The last known trading value in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
 			"pair",
 		},
 	)
-	highValue = promauto.NewGaugeVec(
+	high24 = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_high_24h_value",
-			Help: "The 24h highest value in a given market (exchange/pair)",
+			Name: "crypto_high_24h_currency",
+			Help: "The 24h highest value in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
 			"pair",
 		},
 	)
-	lowValue = promauto.NewGaugeVec(
+	low24 = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_low_24h_value",
-			Help: "The 24h lowest value in a given market (exchange/pair)",
+			Name: "crypto_low_24h_currency",
+			Help: "The 24h lowest value in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
 			"pair",
 		},
 	)
-	changePercentValue = promauto.NewGaugeVec(
+	changePercent = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_change_percent_value",
-			Help: "The 24h percentage change in a given market (exchange/pair)",
+			Name: "crypto_change_24h_ratio",
+			Help: "The 24h change ratio in a given market",
 		},
 		[]string{
 			"exchange",
 			"pair",
 		},
 	)
-	changeAbsoluteValue = promauto.NewGaugeVec(
+	changeAbsolute = promauto.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "crypto_change_absolute_value",
-			Help: "The 24h absolute change in a given market (exchange/pair)",
+			Name: "crypto_change_24h_currency",
+			Help: "The 24h absolute change in a given market in the currency of the RHS of the pair",
 		},
 		[]string{
 			"exchange",
 			"pair",
 		},
 	)
-	exchanges     string
-	pairs         string
-	listenAddress string
-	cacheSeconds  int
+	lastUpdate = promauto.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "crypto_last_update_seconds",
+			Help: "Seconds since epoch of last update",
+		},
+		[]string{
+			"exchange",
+			"pair",
+		},
+	)
 )
 
-func init() {
-	flag.StringVar(&exchanges, "cryptowat.exchanges", "bitstamp,kraken,coinbase-pro", "Comma separated list of exchanges")
-	flag.StringVar(&pairs, "cryptowat.pairs", "btcusd,ltcusd", "Comma separated list of pairs")
-	flag.IntVar(&cacheSeconds, "cryptowat.cacheseconds", 60, "Number of seconds to cache values for")
-	flag.StringVar(&listenAddress, "web.listen-address", ":9150", "Address to listen on for web interface and telemetry")
-	flag.Parse()
-}
-
 func main() {
-	recordMetrics()
-	log.Printf("Listening on address %s", listenAddress)
+	var (
+		listenAddress = kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9745").String()
+		exchanges     = kingpin.Flag("cryptowat.exchanges", "Comma separated list of exchanges.").Default("kraken,bitstamp").String()
+		pairs         = kingpin.Flag("cryptowat.pairs", "Comma separated list of pairs.").Default("btcusd,ltcusd").String()
+		cacheSeconds  = kingpin.Flag("cryptowat.cacheseconds", "Number of seconds to cache values for.").Default("60").String()
+	)
+	kingpin.Parse()
+
+	recordMetrics(*exchanges, *pairs, *cacheSeconds)
+	log.Printf("Listening on address %s", *listenAddress)
 	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(listenAddress, nil)
+	if err := http.ListenAndServe(*listenAddress, nil); err != nil {
+		log.Fatalf("Error starting HTTP server (%s)", err)
+	}
 }

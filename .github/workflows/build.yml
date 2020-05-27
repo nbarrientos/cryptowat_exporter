@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest]
     steps:
 
     - name: Set up Go 1.13
@@ -18,12 +18,12 @@ jobs:
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
-      
+
     - name: Build
-      run: go build -o prometheus-cryptowat-exporter -v .
-      
+      run: make
+
     - name: Save artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: prometheus-cryptowat-exporter-${{ matrix.os }}
-        path: prometheus-cryptowat-exporter
+        name: cryptowat_exporter-${{ matrix.os }}
+        path: cryptowat_exporter
