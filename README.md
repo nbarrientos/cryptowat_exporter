@@ -1,4 +1,4 @@
-# cryptowat_exporter
+# cryptowat_exporter [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Build/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ABuild) [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Release/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ARelease)
 
 A [Prometheus](https://prometheus.io/) exporter to fetch values from [cryptowat.ch](https://cryptowat.ch) written in Go.
 
