@@ -4,26 +4,31 @@ jobs:
 
   build:
     name: Build
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
 
     - name: Set up Go 1.14
       uses: actions/setup-go@v1
       with:
         go-version: 1.14
-      id: go
 
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
 
-    - name: Build
+    - name: Code checks and build
       run: make
 
-    - name: Save artifacts
+    - name: Cross build
+      run: $HOME/go/bin/promu crossbuild
+
+    - name: Save linux/amd64 artifacts
       uses: actions/upload-artifact@v1
       with:
-        name: cryptowat_exporter-${{ matrix.os }}
-        path: cryptowat_exporter
+        name: cryptowat_exporter_linux_amd64
+        path: ./.build/linux-amd64/cryptowat_exporter
+
+    - name: Save windows/amd64 artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: cryptowat_exporter_windows_amd64
+        path: ./.build/windows-amd64/cryptowat_exporter.exe

@@ -1,10 +1,6 @@
-ARG ARCH="amd64"
-ARG OS="linux"
-FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
+FROM quay.io/prometheus/busybox:latest
 LABEL maintainer="Nacho Barrientos <nacho@criptonita.com>"
 
-ARG ARCH="amd64"
-ARG OS="linux"
 COPY cryptowat_exporter  /bin/cryptowat_exporter
 
 ENV CRYPTOWAT_EXCHANGES="bitstamp,kraken,coinbase-pro"
