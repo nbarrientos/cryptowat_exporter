@@ -3,6 +3,7 @@
 [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Build/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ABuild) 
 [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Release/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ARelease)
 [![](https://img.shields.io/docker/pulls/nbarrientos/cryptowat_exporter-linux-amd64.svg?maxAge=604800)](https://hub.docker.com/r/nbarrientos/cryptowat_exporter-linux-amd64)
+[![](https://img.shields.io/github/v/release/nbarrientos/cryptowat_exporter)](https://github.com/nbarrientos/cryptowat_exporter/releases)
 
 A [Prometheus](https://prometheus.io/) exporter to fetch values from [cryptowat.ch](https://cryptowat.ch) written in Go.
 
