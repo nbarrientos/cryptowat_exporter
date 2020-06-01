@@ -4,7 +4,7 @@ A [Prometheus](https://prometheus.io/) exporter to fetch values from [cryptowat.
 
 ## Installation
 
-Binaries can be downloaded from the Github releases page. A Docker image will be released soon.
+Binaries can be downloaded from the Github releases page. A Docker image hosted on Dockerhub is also available.
 
 Building yourself is rather easy, just install `golang` and `make` and run:
 
@@ -12,10 +12,16 @@ Building yourself is rather easy, just install `golang` and `make` and run:
 make
 ```
 
-To build a Docker image, adjust the Docker architectures in the `Makefile` and run:
+To build a Docker image yourself, adjust the Docker architectures in the `Makefile` and run:
 
 ```
 make docker
+```
+
+To use the pre-built image just pull it:
+
+```
+docker pull nbarrientos/cryptowat_exporter-linux-amd64
 ```
 
 ## Usage
@@ -24,13 +30,22 @@ make docker
 ./cryptowat_exporter
 ```
 
-or with Docker:
+or with Docker (self-built):
 
 ```
 sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 prom/cryptowat_exporter-linux-amd64:master
 ```
 
+or pre-built:
+
+```
+sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 nbarrientos/cryptowat_exporter-linux-amd64
+```
+
 Then visit `http://localhost:9745/metrics`
+
+Please note that publishing the exposed ports is optional. For instance if you do IPv6 global address allocation at container start time
+you might not want to pass `-p` at all.
 
 ## Configuration
 
