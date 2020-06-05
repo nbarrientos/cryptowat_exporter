@@ -2,7 +2,7 @@
 
 [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Build/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ABuild) 
 [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Release/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ARelease)
-[![](https://img.shields.io/docker/pulls/nbarrientos/cryptowat_exporter-linux-amd64.svg?maxAge=604800)](https://hub.docker.com/r/nbarrientos/cryptowat_exporter-linux-amd64)
+[![](https://img.shields.io/docker/pulls/nbarrientos/cryptowat_exporter.svg?maxAge=604800)](https://hub.docker.com/r/nbarrientos/cryptowat_exporter)
 [![](https://img.shields.io/github/v/release/nbarrientos/cryptowat_exporter)](https://github.com/nbarrientos/cryptowat_exporter/releases)
 ![](https://img.shields.io/github/go-mod/go-version/nbarrientos/cryptowat_exporter)
 
@@ -27,7 +27,7 @@ make docker
 To use the pre-built image just pull it:
 
 ```
-docker pull nbarrientos/cryptowat_exporter-linux-amd64
+docker pull nbarrientos/cryptowat_exporter
 ```
 
 ## Usage
@@ -39,13 +39,13 @@ docker pull nbarrientos/cryptowat_exporter-linux-amd64
 or with Docker (self-built):
 
 ```
-sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 prom/cryptowat_exporter-linux-amd64:master
+sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 prom/cryptowat_exporter:master
 ```
 
 or pre-built:
 
 ```
-sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 nbarrientos/cryptowat_exporter-linux-amd64
+sudo docker run -d --name cryptowat_exporter -e "TZ=Europe/Zurich" --user yourchoice -p 9745:9745 nbarrientos/cryptowat_exporter
 ```
 
 Then visit `http://localhost:9745/metrics`
