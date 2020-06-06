@@ -2,7 +2,7 @@
 
 [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Build/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ABuild) 
 [![](https://github.com/nbarrientos/cryptowat_exporter/workflows/Release/badge.svg)](https://github.com/nbarrientos/cryptowat_exporter/actions?query=workflow%3ARelease)
-[![](https://img.shields.io/docker/pulls/nbarrientos/cryptowat_exporter.svg?maxAge=604800)](https://hub.docker.com/r/nbarrientos/cryptowat_exporter)
+[![](https://img.shields.io/docker/pulls/nbarrientos/cryptowat_exporter.svg)](https://hub.docker.com/r/nbarrientos/cryptowat_exporter)
 [![](https://img.shields.io/github/v/release/nbarrientos/cryptowat_exporter)](https://github.com/nbarrientos/cryptowat_exporter/releases)
 ![](https://img.shields.io/github/go-mod/go-version/nbarrientos/cryptowat_exporter)
 
