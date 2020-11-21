@@ -62,10 +62,11 @@ The exporter takes some command line parameters that allow configuring a few thi
 * `--cryptowat.cachesecs`: Number of seconds to cache values for (default: 60)
 * `--web.listen-address`: Address and port to listen on (default: `:9745`)
 
-Docker users can customise the list of exchanges and pairs using the following environment variables:
+Docker users can customise the list of exchanges, pairs and cache lifetime using the following environment variables:
 
 * `CRYPTOWAT_EXCHANGES`
 * `CRYPTOWAT_PAIRS`
+* `CRYPTOWAT_CACHESECONDS`
 
 See the [Dockerfile](https://github.com/nbarrientos/cryptowat_exporter/blob/master/Dockerfile) for more details.
 
@@ -101,7 +102,7 @@ scrape_configs:
       - targets: ['localhost:9745']
 ```
 
-You can poll as often as you want but, by default, the exporter only refreshes the cached values every minute. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
+You can poll as often as you want but, by default, the exporter only refreshes the cached values every fifteen minutes. This can be changed using `--cryptowat.cachesecs` but bear in mind that Cryptowat.ch's API does rate limiting.
 
 ## Example Grafana visualisations
 
