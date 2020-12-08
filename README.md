@@ -59,7 +59,7 @@ The exporter takes some command line parameters that allow configuring a few thi
 
 * `--cryptowat.exchanges`: Comma separated list of exchanges to scrape (default: `bitstamp,kraken,coinbase-pro`)
 * `--cryptowat.pairs`: Comma separated list of pairs to scrape (default: `btcusd,ltcusd`)
-* `--cryptowat.cacheseconds`: Number of seconds to cache values for (default: 60)
+* `--cryptowat.cacheseconds`: Number of seconds to cache values for (default: 300)
 * `--web.listen-address`: Address and port to listen on (default: `:9745`)
 
 Docker users can customise the list of exchanges, pairs and cache lifetime using the following environment variables:
