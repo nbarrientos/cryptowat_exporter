@@ -32,3 +32,9 @@ jobs:
       with:
         name: cryptowat_exporter_windows_amd64
         path: ./.build/windows-amd64/cryptowat_exporter.exe
+
+    - name: Save darwin/amd64 artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: cryptowat_exporter_darwin_amd64
+        path: ./.build/darwin-amd64/cryptowat_exporter

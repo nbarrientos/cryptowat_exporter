@@ -42,6 +42,16 @@ jobs:
         asset_name: cryptowat_exporter_${{ github.event.release.tag_name}}_windows_amd64
         asset_content_type: application/binary
 
+    - name: Upload release asset (darwin/amd64)
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./.build/darwin-amd64/cryptowat_exporter
+        asset_name: cryptowat_exporter_${{ github.event.release.tag_name}}_darwin_amd64
+        asset_content_type: application/binary
+
     - name: Set up Docker Buildx
       id: buildx
       uses: crazy-max/ghaction-docker-buildx@v2
